@@ -1,1 +1,1 @@
-#Image-trainging model
+#Image-training model
