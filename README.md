@@ -1,1 +1,1 @@
-#Image-trainging model
+Image trainging model using deep neural network
