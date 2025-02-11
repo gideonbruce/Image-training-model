@@ -1,0 +1,54 @@
+# Install ultralytics package if not installed
+!pip install ultralytics
+
+import torch
+from ultralytics import YOLO
+import cv2
+import matplotlib.pyplot as plt
+from PIL import Image
+import os
+
+# Check if GPU is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
+
+# Load the YOLOv8 model
+model = YOLO("yolov8n.pt")  # You can choose yolov8s.pt or yolov8m.pt for better accuracy
+
+# Define dataset path
+dataset_path = "datasets/maize-weed"
+assert os.path.exists(dataset_path), "Dataset path does not exist! Ensure dataset is in YOLO format."
+
+# Train the model
+model.train(
+    data=f"{dataset_path}/data.yaml",  # Ensure this file is correctly formatted
+    epochs=50,  # Increase for better results
+    imgsz=640,  # Image size
+    batch=16,  # Adjust based on GPU memory
+    device=device,
+    workers=4  # Number of data loader workers
+)
+
+# Save the trained model
+model_path = "yolov8_maize_weed.pt"
+model.save(model_path)
+print(f"Model saved at {model_path}")
+
+# Run inference on test images
+def predict_and_visualize(image_path, model_path=model_path):
+    model = YOLO(model_path)
+    results = model(image_path)
+    
+    for result in results:
+        img = cv2.imread(image_path)
+        for box in result.boxes.xyxy:
+            x1, y1, x2, y2 = map(int, box[:4])
+            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        
+        plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        plt.axis("off")
+        plt.show()
+
+# Test on a sample image
+sample_image = "datasets/maize-weed/test/sample.jpg"
+predict_and_visualize(sample_image)

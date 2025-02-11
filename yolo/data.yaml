@@ -1,0 +1,5 @@
+train: C:\Users\Bruce\Desktop\AutomatedWeedControl\yolo\images\train
+val: C:\Users\Bruce\Desktop\AutomatedWeedControl\yolo\images\val
+
+nc: 2
+names: ["maize", "weed"]
