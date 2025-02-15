@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css"; // Add a separate CSS file for styling
+import "./App.css"; // Import CSS for styling
 
 export default function WeedDetection() {
   const [image, setImage] = useState(null);
@@ -43,13 +43,13 @@ export default function WeedDetection() {
 
   return (
     <div className="container">
-      <h1>Weed Detection System</h1>
-      <input type="file" accept="image/*" onChange={handleImageUpload} id="upload" />
-      {preview && <img src={preview} alt="Uploaded Preview" className="image" />}
-      <button onClick={handleSubmit} disabled={!image || loading}>
+      <h1 className="title">Weed Detection System</h1>
+      <input type="file" accept="image/*" onChange={handleImageUpload} id="upload" className="file-input" />
+      {preview && <img src={preview} alt="Uploaded Preview" className="image-preview" />}
+      <button onClick={handleSubmit} disabled={!image || loading} className="detect-button">
         {loading ? "Processing..." : "Detect Weeds"}
       </button>
-      {processedImage && <img src={processedImage} alt="Processed Image" className="image" />}
+      {processedImage && <img src={processedImage} alt="Processed Image" className="image-preview" />}
     </div>
   );
 }
