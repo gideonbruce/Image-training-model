@@ -8,10 +8,9 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
-CORS(app)  # Allows React frontend to communicate with Flask backend
+CORS(app)  
 
-# Load the YOLOv8 model
-model = YOLO("maize_dataset.pt")  # Ensure your YOLOv8 model file is named 'model.pt'
+model = YOLO("best.pt") 
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -28,8 +27,8 @@ def predict():
     # Draw bounding boxes on the image
     for result in results:
         for box in result.boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0])  # Bounding box coordinates
-            cv2.rectangle(image_cv, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Draw box
+            x1, y1, x2, y2 = map(int, box.xyxy[0])  
+            cv2.rectangle(image_cv, (x1, y1), (x2, y2), (0, 255, 0), 2)  
             label = f"{result.names[int(box.cls[0])]} {box.conf[0]:.2f}"
             cv2.putText(image_cv, label, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
